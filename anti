@@ -1,0 +1,145 @@
+hookfunction(game.Players.LocalPlayer.IsInGroup, function() return true end)
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("017", "Serpent")
+
+local title = "017"
+local text = getgenv().demisethebest and "Enabled" or "Hi Mr.Nigga"
+local duration = 10
+game.StarterGui:SetCore("SendNotification", { Title = title, Text = text, Duration = duration })
+
+
+
+local Tab = Window:NewTab("AntiLock")
+local AASection = Tab:NewSection("AA")
+
+local Tab = Window:NewTab("Misc")
+local MiscSection = Tab:NewSection("Misc")
+
+local Tab = Window:NewTab("ToggleUI")
+local ToggleUISection = Tab:NewSection("ToggleUI")
+
+MiscSection:NewButton("Show-Self-Velocity(20-50 fps drop)", "ButtonInfo", function()
+--[[
+ 
+    Created By Nosssa supports, all hood games!
+ 
+    Roblox Group ( TeamNosss! ): https://www.roblox.com/groups/16003304/TeamNosss#!/about
+ 
+--]]
+
+
+local Prediction = .18 -- Standard Prediction Value ( Don't recommend to change this since its accurate 95% )
+
+local RunService = game:GetService("RunService")
+local PlayersService = game:GetService("Players")
+local LocalPlayer = PlayersService.LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
+
+Drawing = Drawing
+
+local Square = Drawing.new("Circle")
+Square.Visible = true
+Square.Filled = true
+Square.Thickness = 1
+Square.Transparency = 1
+Square.Color = Color3.new(0.65, 0.65, 1)
+Square.Radius = 5
+
+function ShowVelocityOf(User)
+	local Camera = game:GetService("Workspace").CurrentCamera
+	local Vector, OnScreen = Camera:WorldToViewportPoint(User.Character:FindFirstChild("HumanoidRootPart").Position + (User.Character:FindFirstChild("HumanoidRootPart").AssemblyLinearVelocity * Prediction))
+	if OnScreen then
+		Square.Radius = 5
+		Square.Position = Vector2.new(Vector.X,Vector.Y)
+	else
+		Square.Radius = 0
+	end
+end
+
+local Stapel = nil
+Stapel = RunService.Heartbeat:Connect(function()
+	pcall(function()
+		ShowVelocityOf(LocalPlayer)
+	end)
+end)
+end)
+
+MiscSection:NewButton("EndMatch(Reset)", "ButtonInfo", function()
+game:GetService("Players").LocalPlayer.Character.Humanoid.Health = -500
+end)
+
+MiscSection:NewButton("Invisible(Use it with desync)", "ButtonInfo", function()
+game:GetService("Players").LocalPlayer.Character:BreakJoints()
+end)
+
+AASection:NewToggle("Desync", "", function(state)
+    if state then
+getgenv().demisethebest = true
+getgenv().spinSpeed = 0.4
+
+game:GetService("RunService").heartbeat:Connect(function()
+if getgenv().demisethebest == true then
+local abc = game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity
+local rotation = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, getgenv().spinSpeed, 0)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(1,1,1) * (2^16)
+game:GetService("RunService").RenderStepped:Wait()
+game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = abc
+end
+end)
+    else
+getgenv().demisethebest = false
+getgenv().spinSpeed = 0.0009
+
+game:GetService("RunService").heartbeat:Connect(function()
+if getgenv().demisethebest == true then
+local abc = game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity
+local rotation = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, getgenv().spinSpeed, 0)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(1,1,1) * (2^16)
+game:GetService("RunService").RenderStepped:Wait()
+game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = abc
+end
+end)
+    end
+end)
+
+AASection:NewToggle("Velocity-Changer", "ToggleInfo", function(state)
+    if state then
+getgenv().Sky = true
+getgenv().SkyAmount = 40
+getgenv().SkyAmountX = 99
+getgenv().SkyAmountZ = 99
+
+game:GetService("RunService").heartbeat:Connect(function()
+if getgenv().Sky ~= false then
+local vel = game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity
+game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(getgenv().SkyAmountX, getgenv().SkyAmount, getgenv().SkyAmountZ)
+game:GetService("RunService").RenderStepped:Wait()
+game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = vel
+end
+end)
+    else
+getgenv().Sky = false
+getgenv().SkyAmount = 40
+getgenv().SkyAmountX = 100
+getgenv().SkyAmountZ = 100
+
+game:GetService("RunService").heartbeat:Connect(function()
+if getgenv().Sky ~= false then
+local vel = game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity
+game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(getgenv().SkyAmountX, getgenv().SkyAmount, getgenv().SkyAmountZ)
+game:GetService("RunService").RenderStepped:Wait()
+game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = vel
+end
+end)
+    end
+end)
+
+ToggleUISection:NewKeybind("KeyBind", ".", Enum.KeyCode.RightControl, function()
+	Library:ToggleUI()
+end)
+
+MiscSection:NewButton("Rejoin", "ButtonInfo", function()
+game:GetService("TeleportService"):Teleport(game.PlaceId)
+end)
